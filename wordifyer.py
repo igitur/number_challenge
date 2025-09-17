@@ -23,7 +23,23 @@ INVALID_NUMBER_STRING = "number invalid"
 NEGATIVE_NUMBER_PREFIX = "minus"
 
 
+def validate(n: int) -> None:
+    if not isinstance(n, (int, float)):
+        raise TypeError("Input must be a numeric type")
+
+    if not n.is_integer():
+        raise TypeError("Input must be an integer")
+
+    if abs(n) >= 10**36:
+        raise ValueError("Input is outside the valid range")
+
+
 def number_to_words(n: int) -> str:
+    try:
+        validate(n)
+    except (TypeError, ValueError):
+        return INVALID_NUMBER_STRING
+
     # A few shorcuts first
     if n == 0:
         return "zero"
