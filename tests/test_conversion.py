@@ -82,6 +82,15 @@ class TestConversion:
             (712632000, "seven hundred and twelve million six hundred and thirty-two thousand"),
             (712632001, "seven hundred and twelve million six hundred and thirty-two thousand and one"),
             (-712632001, "minus seven hundred and twelve million six hundred and thirty-two thousand and one"),
+            (
+                913412708201001,
+                "nine hundred and thirteen trillion four hundred and twelve billion seven hundred and eight million two hundred and one thousand and one",
+            ),
+            (13012008001001, "thirteen trillion twelve billion eight million one thousand and one"),
+            (
+                10**36 - 1,
+                "nine hundred and ninety-nine decillion nine hundred and ninety-nine nonillion nine hundred and ninety-nine octillion nine hundred and ninety-nine septillion nine hundred and ninety-nine sextillion nine hundred and ninety-nine quintillion nine hundred and ninety-nine quadrillion nine hundred and ninety-nine trillion nine hundred and ninety-nine billion nine hundred and ninety-nine million nine hundred and ninety-nine thousand nine hundred and ninety-nine",
+            ),
         ],
     )
     def test_number_to_words(self, number, expected):
