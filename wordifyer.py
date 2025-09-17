@@ -20,12 +20,16 @@ LARGE_NUMBER_NAMES = {
 }
 
 INVALID_NUMBER_STRING = "number invalid"
+NEGATIVE_NUMBER_PREFIX = "minus"
 
 
 def number_to_words(n: int) -> str:
     # A few shorcuts first
     if n == 0:
         return "zero"
+
+    if n < 0:
+        return NEGATIVE_NUMBER_PREFIX + " " + number_to_words(-n)
 
     base_10_exponent = math.log10(n)
 
