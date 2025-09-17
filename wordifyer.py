@@ -156,7 +156,10 @@ def handle_conversion_recursively(n: int) -> tuple[bool, list[str]]:
     if not success:
         return False, None
 
-    return True, part1_value + [LARGE_NUMBER_NAMES[magnitude]] + part2_value
+    # Usually we want a comma after a large number name (e.g. 7 million, three hundred thousand, four hundred and fifty)
+    # but not if the next word is 'and' (e.g. one thousand and one) and we don't want a trailing comma
+    needs_comma = len(part2_value) > 0 and part2_value[0] != "and"
+    return True, part1_value + [LARGE_NUMBER_NAMES[magnitude] + ("," if needs_comma else "")] + part2_value
 
 
 def try_convert(n: int, prefix_and: bool) -> tuple[bool, list[str]]:

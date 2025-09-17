@@ -60,18 +60,18 @@ class TestConversion:
             (778, "seven hundred and seventy-eight"),
             (999, "nine hundred and ninety-nine"),
             # Complex numbers
-            (87334, "eighty-seven thousand three hundred and thirty-four"),
+            (87334, "eighty-seven thousand, three hundred and thirty-four"),
             (
                 54712671,
-                "fifty-four million seven hundred and twelve thousand six hundred and seventy-one",
+                "fifty-four million, seven hundred and twelve thousand, six hundred and seventy-one",
             ),
             (
                 123456789,
-                "one hundred and twenty-three million four hundred and fifty-six thousand seven hundred and eighty-nine",
+                "one hundred and twenty-three million, four hundred and fifty-six thousand, seven hundred and eighty-nine",
             ),
             (
                 999999999,
-                "nine hundred and ninety-nine million nine hundred and ninety-nine thousand nine hundred and ninety-nine",
+                "nine hundred and ninety-nine million, nine hundred and ninety-nine thousand, nine hundred and ninety-nine",
             ),
             (1000000000, "one billion"),
             (2000000000, "two billion"),
@@ -79,17 +79,17 @@ class TestConversion:
             # A few more edge cases
             (100010, "one hundred thousand and ten"),
             (201005, "two hundred and one thousand and five"),
-            (712632000, "seven hundred and twelve million six hundred and thirty-two thousand"),
-            (712632001, "seven hundred and twelve million six hundred and thirty-two thousand and one"),
-            (-712632001, "minus seven hundred and twelve million six hundred and thirty-two thousand and one"),
+            (712632000, "seven hundred and twelve million, six hundred and thirty-two thousand"),
+            (712632001, "seven hundred and twelve million, six hundred and thirty-two thousand and one"),
+            (-712632001, "minus seven hundred and twelve million, six hundred and thirty-two thousand and one"),
             (
                 913412708201001,
-                "nine hundred and thirteen trillion four hundred and twelve billion seven hundred and eight million two hundred and one thousand and one",
+                "nine hundred and thirteen trillion, four hundred and twelve billion, seven hundred and eight million, two hundred and one thousand and one",
             ),
-            (13012008001001, "thirteen trillion twelve billion eight million one thousand and one"),
+            (13012008001001, "thirteen trillion, twelve billion, eight million, one thousand and one"),
             (
                 10**36 - 1,
-                "nine hundred and ninety-nine decillion nine hundred and ninety-nine nonillion nine hundred and ninety-nine octillion nine hundred and ninety-nine septillion nine hundred and ninety-nine sextillion nine hundred and ninety-nine quintillion nine hundred and ninety-nine quadrillion nine hundred and ninety-nine trillion nine hundred and ninety-nine billion nine hundred and ninety-nine million nine hundred and ninety-nine thousand nine hundred and ninety-nine",
+                "nine hundred and ninety-nine decillion, nine hundred and ninety-nine nonillion, nine hundred and ninety-nine octillion, nine hundred and ninety-nine septillion, nine hundred and ninety-nine sextillion, nine hundred and ninety-nine quintillion, nine hundred and ninety-nine quadrillion, nine hundred and ninety-nine trillion, nine hundred and ninety-nine billion, nine hundred and ninety-nine million, nine hundred and ninety-nine thousand, nine hundred and ninety-nine",
             ),
         ],
     )
