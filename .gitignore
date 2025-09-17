@@ -1,0 +1,12 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+wheels/
+*.egg-info
+
+.vscode/
+.venv
