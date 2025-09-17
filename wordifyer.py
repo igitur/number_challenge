@@ -69,6 +69,25 @@ def validate(n: int) -> None:
         raise ValueError("Input is outside the valid range")
 
 
+def _base_10_exponent(n: int) -> int:
+    if n < 10000000000:
+        # use built-in approach. float is accurate enough here
+        return math.log10(n)
+
+    # For very large numbers, we need a different approach
+    # We approximate the exponent by repeatedly dividing by 10
+    exp = 0
+    is_power_of_10 = True
+    while n >= 10:
+        if n % 10 != 0:
+            is_power_of_10 = False
+        n //= 10
+        exp += 1
+
+    # The exact fraction is irrelevant. Later on we just want to know whether it's an integer or has a fraction
+    return exp + (0.5 if is_power_of_10 else 0)
+
+
 def try_shortcut(n: int) -> tuple[bool, str | None]:
     if n in ATOMIC_NUMBER_NAMES:
         return True, ATOMIC_NUMBER_NAMES[n]
@@ -76,7 +95,7 @@ def try_shortcut(n: int) -> tuple[bool, str | None]:
     if n in MULTIPLES_OF_TEN:
         return True, MULTIPLES_OF_TEN[n]
 
-    base_10_exponent = math.log10(n)
+    base_10_exponent = _base_10_exponent(n)
 
     # if the number is a power of 10, return the corresponding word
     if base_10_exponent.is_integer():
@@ -120,7 +139,7 @@ def handle_conversion_recursively(n: int) -> tuple[bool, list[str]]:
     # We want to break up a number e.g. 54712671 into 54 and 712671
     # i.e. we look for the largest power of 1000
     # and we 'split' the value there.
-    base_10_exponent = int(math.log10(n))
+    base_10_exponent = int(_base_10_exponent(n))
     magnitude = base_10_exponent - base_10_exponent % 3
 
     if magnitude not in LARGE_NUMBER_NAMES:
