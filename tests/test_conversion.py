@@ -76,6 +76,12 @@ class TestConversion:
             (1000000000, "one billion"),
             (2000000000, "two billion"),
             (3000000000, "three billion"),
+            # A few more edge cases
+            (100010, "one hundred thousand and ten"),
+            (201005, "two hundred and one thousand and five"),
+            (712632000, "seven hundred and twelve million six hundred and thirty-two thousand"),
+            (712632001, "seven hundred and twelve million six hundred and thirty-two thousand and one"),
+            (-712632001, "minus seven hundred and twelve million six hundred and thirty-two thousand and one"),
         ],
     )
     def test_number_to_words(self, number, expected):

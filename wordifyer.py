@@ -86,14 +86,17 @@ def try_shortcut(n: int) -> tuple[bool, str | None]:
     return False, None
 
 
-def handle_less_than_100(n: int) -> tuple[bool, list[str]]:
+def handle_less_than_100(n: int, prefix_and: bool) -> tuple[bool, list[str]]:
     # we know n is > 20 too (from previous shortcut approach)
     tens = (n // 10) * 10
     units = n % 10
+    value = ["and"] if prefix_and else []
     if units == 0:
-        return True, [MULTIPLES_OF_TEN[tens]]
+        value = value + [MULTIPLES_OF_TEN[tens]]
     else:
-        return True, [MULTIPLES_OF_TEN[tens] + "-" + ATOMIC_NUMBER_NAMES[units]]
+        value = value + [MULTIPLES_OF_TEN[tens] + "-" + ATOMIC_NUMBER_NAMES[units]]
+
+    return True, value
 
 
 def handle_less_than_1000(n: int) -> tuple[bool, list[str]]:
@@ -101,7 +104,7 @@ def handle_less_than_1000(n: int) -> tuple[bool, list[str]]:
     remainder = n % 100
 
     hundreds_value = ATOMIC_NUMBER_NAMES[hundreds] + " hundred"
-    success, remainder_value = try_convert(remainder)
+    success, remainder_value = try_convert(remainder, prefix_and=True)
 
     if not success:
         # Then something went very wrong!
@@ -110,7 +113,7 @@ def handle_less_than_1000(n: int) -> tuple[bool, list[str]]:
     if len(remainder_value) == 0:
         return True, [hundreds_value]
 
-    return True, [hundreds_value] + ["and"] + remainder_value
+    return True, [hundreds_value] + remainder_value
 
 
 def handle_conversion_recursively(n: int) -> tuple[bool, list[str]]:
@@ -126,20 +129,22 @@ def handle_conversion_recursively(n: int) -> tuple[bool, list[str]]:
     part1 = n // 10**magnitude
     part2 = n % 10**magnitude
 
-    success, part1_value = try_convert(part1)
+    success, part1_value = try_convert(part1, prefix_and=False)
     if not success:
         return False, None
 
-    success, part2_value = try_convert(part2)
+    success, part2_value = try_convert(part2, prefix_and=True)
     if not success:
         return False, None
 
     return True, part1_value + [LARGE_NUMBER_NAMES[magnitude]] + part2_value
 
 
-def try_convert(n: int) -> tuple[bool, list[str]]:
+def try_convert(n: int, prefix_and: bool) -> tuple[bool, list[str]]:
     """
     Recursively convert a number into words.
+    The prefix 'and' is used to separate the hundreds from the tens/units.
+    e.g. "one hundred and twenty-three"
     """
 
     # We have already handled the pure zero case
@@ -150,10 +155,13 @@ def try_convert(n: int) -> tuple[bool, list[str]]:
     # The really simple cases
     success, value = try_shortcut(n)
     if success:
+        if prefix_and:
+            return True, ["and", value]
+
         return True, [value]
 
     if n < 100:
-        return handle_less_than_100(n)
+        return handle_less_than_100(n, prefix_and)
 
     if n < 1000:
         return handle_less_than_1000(n)
@@ -174,7 +182,7 @@ def number_to_words(n: int) -> str:
     if n < 0:
         return NEGATIVE_NUMBER_PREFIX + " " + number_to_words(-n)
 
-    success, value = try_convert(n)
+    success, value = try_convert(n, prefix_and=False)
     if success:
         return " ".join(value)
 
