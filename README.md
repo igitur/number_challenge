@@ -49,7 +49,29 @@ This will execute all tests in the `tests/` directory and report the results.
 
 ## Usage
 
-The main functionality is in `wordifyer.py`. You can use the `number_to_words` function to convert numbers:
+This project can be used in two ways: as a command-line script to process text files, or as a Python library.
+
+### Command-Line Script
+
+The `main.py` script reads text from standard input or a file, extracts all numbers, and prints their word representation to standard output.
+
+An `input.txt` file is provided for demonstration.
+
+**Option 1: Using a pipe**
+
+```powershell
+cat input.txt | uv run main.py
+```
+
+**Option 2: As a command-line argument**
+
+```powershell
+uv run main.py input.txt
+```
+
+### As a Library
+
+The core conversion logic is available in the `number_to_words` function within `wordifyer.py`.
 
 ```python
 from wordifyer import number_to_words
