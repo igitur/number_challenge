@@ -91,6 +91,16 @@ class TestConversion:
                 10**36 - 1,
                 "nine hundred and ninety-nine decillion, nine hundred and ninety-nine nonillion, nine hundred and ninety-nine octillion, nine hundred and ninety-nine septillion, nine hundred and ninety-nine sextillion, nine hundred and ninety-nine quintillion, nine hundred and ninety-nine quadrillion, nine hundred and ninety-nine trillion, nine hundred and ninety-nine billion, nine hundred and ninety-nine million, nine hundred and ninety-nine thousand, nine hundred and ninety-nine",
             ),
+            # Test cases from specs
+            (536, "five hundred and thirty-six"),
+            (9121, "nine thousand, one hundred and twenty-one"),
+            ("#65678", "number invalid"),
+            (10022, "ten thousand and twenty-two"),
+            (
+                66723107008,
+                "sixty-six billion, seven hundred and twenty-three million, one hundred and seven thousand and eight",
+            ),
+            ("23 456,9", "number invalid"),
         ],
     )
     def test_number_to_words(self, number, expected):
