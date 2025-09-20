@@ -84,3 +84,9 @@ print(number_to_words(0))     # Output: "zero"
 
 - Code formatting and linting: `uv run ruff check .` and `uv run ruff format .`
 - The project uses ruff for code quality checks
+
+## AI Usage Disclaimer
+
+No code in this project was generated using AI, LLMs, or autonomous agents.
+
+AI was used to assist with the generation of function docstrings and the contents of this README file, including this disclaimer. All output from AI tools was reviewed and edited by a human developer before being committed to source control.

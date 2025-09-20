@@ -59,6 +59,22 @@ NEGATIVE_NUMBER_PREFIX = "minus"
 
 
 def validate(n) -> int:
+    """
+    Validates and sanitizes the input number.
+
+    The input can be a string, int, or float, but it must represent a whole number.
+    The number must be within the range of -(10**36 - 1) to (10**36 - 1).
+
+    Args:
+        n: The input value to validate.
+
+    Returns:
+        The validated integer.
+
+    Raises:
+        TypeError: If the input is not a numeric type or cannot be converted to an integer.
+        ValueError: If the input number is outside the supported range.
+    """
     if isinstance(n, str):
         try:
             n = int(n)
@@ -78,6 +94,22 @@ def validate(n) -> int:
 
 
 def _base_10_exponent(n: int) -> int:
+    """
+    Calculates the base-10 exponent for a given integer.
+
+    This is a helper function to determine the magnitude of a number. For very large
+    numbers, it uses an iterative approach to avoid float precision issues.
+
+    If the number is a perfect power of 10 (e.g., 1000), it returns an integer exponent.
+    Otherwise, it returns a float to distinguish it from perfect powers.
+
+    Args:
+        n: The integer for which to find the exponent.
+
+    Returns:
+        The base-10 exponent, as an integer for perfect powers of 10, or a float
+        otherwise.
+    """
     if n < 10000000000:
         # use built-in approach. float is accurate enough here
         return math.log10(n)
@@ -97,6 +129,20 @@ def _base_10_exponent(n: int) -> int:
 
 
 def try_shortcut(n: int) -> tuple[bool, str | None]:
+    """
+    Attempts to find a direct word representation for a number.
+
+    This handles atomic numbers (1-19), multiples of ten (10, 20, ... 90),
+    and simple large number names (e.g., "one thousand", "one million").
+
+    Args:
+        n: The number to check.
+
+    Returns:
+        A tuple containing:
+        - A boolean indicating if a shortcut was found.
+        - The string representation if found, otherwise None.
+    """
     if n in ATOMIC_NUMBER_NAMES:
         return True, ATOMIC_NUMBER_NAMES[n]
 
@@ -114,6 +160,21 @@ def try_shortcut(n: int) -> tuple[bool, str | None]:
 
 
 def handle_less_than_100(n: int, prefix_and: bool) -> tuple[bool, list[str]]:
+    """
+    Converts a number between 20 and 99 into its word representation.
+
+    It assumes `n` is not an atomic number or a simple multiple of ten, as those
+    are handled by `try_shortcut`.
+
+    Args:
+        n: The number to convert (must be < 100).
+        prefix_and: If True, prepends "and" to the list of words.
+
+    Returns:
+        A tuple containing:
+        - A boolean indicating success (always True).
+        - A list of strings representing the number in words.
+    """
     # we know n is > 20 too (from previous shortcut approach)
     tens = (n // 10) * 10
     units = n % 10
@@ -127,6 +188,20 @@ def handle_less_than_100(n: int, prefix_and: bool) -> tuple[bool, list[str]]:
 
 
 def handle_less_than_1000(n: int) -> tuple[bool, list[str]]:
+    """
+    Converts a number between 100 and 999 into its word representation.
+
+    It breaks the number into the hundreds part and the remainder, then
+    recursively calls the conversion logic for the remainder.
+
+    Args:
+        n: The number to convert (must be < 1000).
+
+    Returns:
+        A tuple containing:
+        - A boolean indicating success.
+        - A list of strings representing the number in words.
+    """
     hundreds = n // 100
     remainder = n % 100
 
@@ -144,6 +219,21 @@ def handle_less_than_1000(n: int) -> tuple[bool, list[str]]:
 
 
 def handle_conversion_recursively(n: int) -> tuple[bool, list[str]]:
+    """
+    Recursively converts a number greater than or equal to 1000.
+
+    It splits the number into the largest scale part (e.g., millions, thousands)
+    and the remainder, then converts each part. For example, 54,712,671 is
+    split into 54 (million) and 712,671.
+
+    Args:
+        n: The number to convert.
+
+    Returns:
+        A tuple containing:
+        - A boolean indicating success.
+        - A list of strings representing the number in words, or None on failure.
+    """
     # We want to break up a number e.g. 54712671 into 54 and 712671
     # i.e. we look for the largest power of 1000
     # and we 'split' the value there.
@@ -172,12 +262,21 @@ def handle_conversion_recursively(n: int) -> tuple[bool, list[str]]:
 
 def try_convert(n: int, prefix_and: bool) -> tuple[bool, list[str]]:
     """
-    Recursively convert a number into words.
-    The prefix 'and' is used to separate the hundreds from the tens/units.
-    e.g. "one hundred and twenty-three"
-    """
+    Dispatches number conversion to the appropriate handler based on magnitude.
 
-    # We have already handled the pure zero case
+    This is the core recursive function that breaks down a number and converts it
+    into a list of word components.
+
+    Args:
+        n: The number to convert.
+        prefix_and: If True, an "and" may be prefixed for numbers less than 100
+                    as part of a larger number (e.g., "one hundred AND one").
+
+    Returns:
+        A tuple containing:
+        - A boolean indicating success.
+        - A list of strings representing the number in words.
+    """
     # If n is zero here, it's the remnant of parsing a bigger number.
     if n == 0:
         return True, []
@@ -201,6 +300,19 @@ def try_convert(n: int, prefix_and: bool) -> tuple[bool, list[str]]:
 
 
 def number_to_words(n: int) -> str:
+    """
+    Converts an integer into its English word representation.
+
+    Handles positive and negative integers up to (but not including) 10**36.
+    It uses the short scale for large number names (billion = 10**9).
+
+    Args:
+        n: The integer to convert. Can also be a string representation of an integer.
+
+    Returns:
+        The English word representation of the number as a string,
+        or "number invalid" if the input is invalid or out of range.
+    """
     try:
         n = validate(n)
     except (TypeError, ValueError):
