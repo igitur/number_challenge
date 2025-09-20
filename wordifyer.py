@@ -58,7 +58,13 @@ INVALID_NUMBER_STRING = "number invalid"
 NEGATIVE_NUMBER_PREFIX = "minus"
 
 
-def validate(n: int) -> None:
+def validate(n) -> int:
+    if isinstance(n, str):
+        try:
+            n = int(n)
+        except ValueError:
+            raise TypeError("Input must be an integer")
+
     if not isinstance(n, (int, float)):
         raise TypeError("Input must be a numeric type")
 
@@ -67,6 +73,8 @@ def validate(n: int) -> None:
 
     if abs(n) >= 10**36:
         raise ValueError("Input is outside the valid range")
+
+    return n
 
 
 def _base_10_exponent(n: int) -> int:
@@ -194,7 +202,7 @@ def try_convert(n: int, prefix_and: bool) -> tuple[bool, list[str]]:
 
 def number_to_words(n: int) -> str:
     try:
-        validate(n)
+        n = validate(n)
     except (TypeError, ValueError):
         return INVALID_NUMBER_STRING
 
