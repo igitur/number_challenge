@@ -10,6 +10,7 @@ class TestValidation:
         validate(0)
         validate(12345)
         validate(-654987)
+        assert 12345 == validate("12345")
 
     def test_fractions_not_allowed(self):
         with pytest.raises(TypeError):
