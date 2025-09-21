@@ -1,6 +1,6 @@
 # Number Challenge
 
-A Python project that converts numbers to their word representations using the short scale naming convention.
+A Python project that converts numbers to their word representations using the short scale naming convention. See [Thought Process](THOUGHT_PROCESS.md) for details on the implementation and development approach.
 
 ## Setup
 
